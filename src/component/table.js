@@ -74,7 +74,12 @@ export function renderCell(draw, data, rindex, cindex, yoffset = 0) {
   }
   draw.rect(dbox, () => {
     // render text
-    let cellText = _cell.render(cell.text || '', formulam, (y, x) => (data.getCellTextOrDefault(x, y)));
+    let cellText = "";
+    if(!data.settings.evalPaused) {
+      cellText = _cell.render(cell.text || '', formulam, (y, x) => (data.getCellTextOrDefault(x, y)));
+    } else {
+      cellText = cell.text || '';
+    }
     if (style.format) {
       // console.log(data.formatm, '>>', cell.format);
       cellText = formatm[style.format].render(cellText);
@@ -263,7 +268,7 @@ function renderContentGrid({
   // const sumWidth = cols.sumWidth(sci, eci + 1);
   // const sumHeight = rows.sumHeight(sri, eri + 1);
   // console.log('sumWidth:', sumWidth);
-  draw.clearRect(0, 0, w, h);
+  // draw.clearRect(0, 0, w, h);
   if (!settings.showGrid) {
     draw.restore();
     return;
